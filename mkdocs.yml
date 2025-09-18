@@ -1,5 +1,4 @@
-site_name: YOUR_PROJECT_NAME
-  site_name: Sankalpa
+site_name: Sankalpa
 docs_dir: docs
 
 plugins:
@@ -70,6 +69,3 @@ markdown_extensions:
           - overrides/.icons
 extra_css:
   - stylesheets/extra.css
-
-extra_javascript:
-  - overrides/mermaid-config.js
