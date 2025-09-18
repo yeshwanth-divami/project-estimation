@@ -1,6 +1,5 @@
 ---
 description: "Instruction template for generating a ‘business_requirement.md’ document from project-level Markdown inputs including vision, supporting docs, and happy flow."
-tools: ['createFile', 'editFiles', 'todos']
 model: Claude Sonnet 4
 context: docs/**/*.md
 ---
@@ -55,7 +54,7 @@ Before drafting the requirements, the AI **must** know the answers to these ques
 ## Business / Functional Requirements Document Structure
 
 ```markdown
-# 📄 Business & Functional Requirements: <Project Name>
+# Business & Functional Requirements
 
 ## 1. Purpose
 One- or two-sentence description of the document’s intent.
@@ -76,7 +75,7 @@ For each use case:
   **Description:** Brief summary.  
   **Actors:** List of actors.  
   **Preconditions:** What must be true before.  
-  **Main Flow:** Numbered steps describing the ideal path.  
+  **Main Flow:** Mermaid flowchart with colored css describing the ideal path.  
   **Alternate Flows:** Bullet or numbered list of variations.
 
 ## 4b. Visual Flows (Optional but Encouraged)
@@ -129,7 +128,17 @@ For each FR or Use Case:
 ## Output
 * **Format:** Markdown (`.md`)  
 * **Filename:** `tasks/business-requirements.md`  
-After the document is generated, please add a hyperlink to it in `docs/index.md`
+
+## Cleanup Tasks
+After generating the vision document, 
+- please add the hyperlink to the `docs/index.md`
+- update the `docs/.pages` file to include `business-requirements.md`
+
+```
+arrange:
+    - vision.md
+    - business-requirements.md
+```
 
 ## Final Instructions
 1. **Do NOT** draft the document until all clarifying questions are fully addressed.

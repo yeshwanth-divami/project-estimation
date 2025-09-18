@@ -1,2 +1,2 @@
-- [ ] [Vision](vision.md)
-- [ ] [Business Requirements](business_requirements.md)
+- [x] [Vision](vision.md)
+- [x] [Business Requirements](business-requirements.md)
