@@ -75,7 +75,7 @@ For each use case:
   **Description:** Brief summary.  
   **Actors:** List of actors.  
   **Preconditions:** What must be true before.  
-  **Main Flow:** Mermaid flowchart with colored css describing the ideal path.  
+  **Main Flow:** Mermaid flowchart with colored css describing the ideal path as well as alternate paths (errors, edge-cases, empty states). Ensure alternate paths are comprehensively covered and part of the same diagram.
   **Alternate Flows:** Bullet or numbered list of variations.
 
 ## 4b. Visual Flows (Optional but Encouraged)
@@ -107,8 +107,32 @@ For each FR or Use Case:
 - **Reliability:** e.g., “99.9% uptime”
 
 ## 8. Data Models & Entities (Optional)
-- **Entity Name:** Attributes and relationships.  
-- ...
+Mermaid class diagram of all tables and the key attributes and relationships among them.
+
+Example - 
+```mermaid
+classDiagram
+  class User {
+    +String id
+    +String name
+    +String email
+  }
+
+  class Product {
+    +String id
+    +String name
+    +Float price
+  }
+
+  class Order {
+    +String id
+    +DateTime orderDate
+  }
+
+  User "1" --> "0..*" Order : places
+  Order "1" --> "0..*" Product : contains
+```
+
 
 ## 9. Business Rules & Constraints (Optional)
 - Rule 1: Description.  
@@ -136,11 +160,13 @@ After generating the vision document,
 
 ```
 arrange:
+    - index.md
     - vision.md
     - business-requirements.md
 ```
 
 ## Final Instructions
+0. Use 4 spaces for indentation in Markdown.
 1. **Do NOT** draft the document until all clarifying questions are fully addressed.
 2. **Ensure** each FR maps explicitly to a Use Case or happy flow step.
 3. **Use Mermaid** diagrams for non-trivial flows, especially alternate paths or stateful interactions.

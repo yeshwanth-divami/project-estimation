@@ -14,4 +14,12 @@ build-docs:
 	mkdocs serve
 
 build-docs:
+	mkdocs buildpreview:
+	mkdocs serve
+
+build-docs:
+	mkdocs buildpreview:
+	mkdocs serve
+
+build-docs:
 	mkdocs build
