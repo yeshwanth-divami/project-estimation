@@ -6,28 +6,8 @@ This document defines the detailed business and functional requirements for Kaus
 ## 2. Scope
 - **In-Scope:**  
     - CSV-based rate card import and management
-    -## 7. Non-Functional Requirements
-- **Performance:** Configuration cost calculations must complete within 100ms for configurations up to 20 roles
-- **Usability:** New users should be able to create their first configuration within 5 minutes of CSV import  
-- **Reliability:** System must handle CSV files up to 1MB containing up to 500 role definitions
-- **Accuracy:** All financial calculations must be accurate to 2 decimal places with proper rounding
-- **Responsiveness:** Real-time updates (cost totals, margin calculations) must respond within 100ms of user input
-- **Data Persistence:** Browser local storage must reliably maintain session data across page refreshes
-- **Compatibility:** System must function in modern browsers (Chrome, Firefox, Safari, Edge) without plugins
-
-## 8. Data Models & EntitiesManual team configuration builder with role selection
-    - Real-time cos## 9. Business Rules & Constraints
-
-- Rule 1: Maximum of 3 configurations can be compared simultaneously to maintain UI clarity and performance
-- Rule 2: EBITDA margin calculation must account for internal costs vs. hourly rates with precision to 2 decimal places
-- Rule 3: Discounts cannot exceed 100% of quote amount or result in negative revenue without explicit user confirmation
-- Rule 4: Time allocation must be positive numeric values with support for decimal precision (e.g., 8.5 hours)
-- Rule 5: When using days format, hours-per-day conversion rate is configurable (default: 8 hours/day)
-- Rule 6: All monetary calculations must be rounded to 2 decimal places using standard rounding rules
-- Rule 7: CSV import must validate all data types and required fields before acceptance
-- Rule 8: Duplicate role names in CSV import require explicit user resolution (merge/replace/cancel)
-- Rule 9: Configuration total cost calculations must complete within 100ms for up to 20 roles
-- Rule 10: Real-time updates must maintain calculation accuracy during rapid user input changesation and EBITDA profit margin analysis
+    - Manual team configuration builder with role selection
+    - Real-time cost calculation and EBITDA profit margin analysis
     - Multi-configuration comparison (up to 3 configurations)
     - Standard discount application (percentage and fixed amount)
     - Configuration saving and basic sharing via export/download
@@ -417,7 +397,16 @@ flowchart TD
     - AC3: Configuration totals recalculate immediately upon row removal
     - AC4: Undo functionality available for accidental row deletions
 
-## 7. Data Models & Entities
+## 7. Non-Functional Requirements
+- **Performance:** Configuration cost calculations must complete within 100ms for configurations up to 20 roles
+- **Usability:** New users should be able to create their first configuration within 5 minutes of CSV import  
+- **Reliability:** System must handle CSV files up to 1MB containing up to 500 role definitions
+- **Accuracy:** All financial calculations must be accurate to 2 decimal places with proper rounding
+- **Responsiveness:** Real-time updates (cost totals, margin calculations) must respond within 100ms of user input
+- **Data Persistence:** Browser local storage must reliably maintain session data across page refreshes
+- **Compatibility:** System must function in modern browsers (Chrome, Firefox, Safari, Edge) without plugins
+
+## 8. Data Models & Entities
 
 ```mermaid
 classDiagram
@@ -502,16 +491,20 @@ classDiagram
     SharedConfiguration "1" --> "1" TeamConfiguration : references
 ```
 
-## 8. Business Rules & Constraints
+## 9. Business Rules & Constraints
 
-- Rule 1: Maximum of 3 configurations can be compared simultaneously
-- Rule 2: EBITDA margin calculation must account for internal costs vs. hourly rates
-- Rule 3: Discounts cannot exceed 100% of quote amount or result in negative revenue
-- Rule 4: Time allocation must be positive numeric values
-- Rule 5: All monetary calculations must be rounded to 2 decimal places
-- Rule 6: CSV import must validate data types and required fields before acceptance
+- Rule 1: Maximum of 3 configurations can be compared simultaneously to maintain UI clarity and performance
+- Rule 2: EBITDA margin calculation must account for internal costs vs. hourly rates with precision to 2 decimal places
+- Rule 3: Discounts cannot exceed 100% of quote amount or result in negative revenue without explicit user confirmation
+- Rule 4: Time allocation must be positive numeric values with support for decimal precision (e.g., 8.5 hours)
+- Rule 5: When using days format, hours-per-day conversion rate is configurable (default: 8 hours/day)
+- Rule 6: All monetary calculations must be rounded to 2 decimal places using standard rounding rules
+- Rule 7: CSV import must validate all data types and required fields before acceptance
+- Rule 8: Duplicate role names in CSV import require explicit user resolution (merge/replace/cancel)
+- Rule 9: Configuration total cost calculations must complete within 100ms for up to 20 roles
+- Rule 10: Real-time updates must maintain calculation accuracy during rapid user input changes
 
-## 9. Assumptions & Dependencies
+## 10. Assumptions & Dependencies
 
 - **Assumptions:** 
     - Users have access to accurate rate card data in CSV format
@@ -525,7 +518,7 @@ classDiagram
     - Browser local storage capabilities
     - File export/download browser APIs
 
-## 10. Glossary
+## 11. Glossary
 
 - **EBITDA Margin:** Earnings Before Interest, Taxes, Depreciation, and Amortization as percentage of revenue
 - **Rate Card:** Standardized pricing sheet containing role costs and billing rates
@@ -533,7 +526,7 @@ classDiagram
 - **Internal Cost:** True business cost for a role (salary, benefits, overhead allocation)
 - **Hourly Rate:** Client billing rate for a specific role
 
-## 11. Open Questions
+## 12. Open Questions
 
 - Should the system support multiple currency formats or assume single currency?
 - What happens to saved configurations when browser data is cleared?

@@ -1,4 +1,4 @@
-# Project Risk Assessment: Kaushalya
+# Risk Assessment
 
 ## Executive Summary
 
