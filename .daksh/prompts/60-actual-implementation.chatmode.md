@@ -30,26 +30,26 @@ Guide an AI assistant to implement a single development task from the component 
 Follow this **4-level hierarchical branching** structure for organized development:
 
 ```
-main → dev → epic-name → epic-name/task-name
+main → dev → epic-name/main → epic-name/task-name
 ```
 
 **Branch Levels:**
 1. **main** — Production-ready code, stable releases
 2. **dev** — Integration branch for all development work
-3. **epic-name** — Component/epic-specific branch (e.g., `user-auth`, `data-layer`)
+3. **epic-name/main** — Component/epic-specific main branch (e.g., `user-auth/main`, `data-layer/main`)
 4. **epic-name/task-name** — Individual task implementation branches
 
 ### **Branch Naming Convention**
 
-#### **Epic Branches (Level 3)**
+#### **Epic Main Branches (Level 3)**
 ```
-[component-name]
+[component-name]/main
 ```
 **Examples:**
-- `user-auth`
-- `data-layer` 
-- `payment-system`
-- `notification-service`
+- `user-auth/main`
+- `data-layer/main` 
+- `payment-system/main`
+- `notification-service/main`
 
 #### **Task Branches (Level 4)**
 ```
@@ -73,18 +73,18 @@ git pull origin main
 git checkout dev
 git pull origin dev
 
-# Step 2: Ensure epic branch exists and is current
-git checkout [epic-name] 2>/dev/null || git checkout -b [epic-name] dev
+# Step 2: Ensure epic main branch exists and is current
+git checkout [epic-name]/main 2>/dev/null || git checkout -b [epic-name]/main dev
 git merge dev --no-ff
-git push origin [epic-name]
+git push origin [epic-name]/main
 
-# Step 3: Create task branch from epic branch
-git checkout -b [epic-name]/[task-id]-[description] [epic-name]
+# Step 3: Create task branch from epic main branch
+git checkout -b [epic-name]/[task-id]-[description] [epic-name]/main
 git push -u origin [epic-name]/[task-id]-[description]
 
 echo "✅ Branch hierarchy setup complete"
 echo "📍 Working on: [epic-name]/[task-id]-[description]"
-echo "📍 Parent branch: [epic-name]"
+echo "📍 Parent branch: [epic-name]/main"
 ```
 
 #### **Phase 2: Implementation & Development**
@@ -115,18 +115,18 @@ git push origin [epic-name]/[task-id]-[description]
 
 #### **Phase 4: Integration & Cleanup (REQUIRED)**
 ```bash
-# Step 9: Merge task branch back to epic branch
-git checkout [epic-name]
-git pull origin [epic-name]  # Get any updates
+# Step 9: Merge task branch back to epic main branch
+git checkout [epic-name]/main
+git pull origin [epic-name]/main  # Get any updates
 git merge [epic-name]/[task-id]-[description] --no-ff
-git push origin [epic-name]
+git push origin [epic-name]/main
 
 # Step 10: Clean up task branch (optional but recommended)
 git branch -d [epic-name]/[task-id]-[description]
 git push origin --delete [epic-name]/[task-id]-[description]
 
 echo "✅ Task implementation complete"
-echo "📍 Changes merged to: [epic-name]"
+echo "📍 Changes merged to: [epic-name]/main"
 echo "🗑️ Task branch cleaned up"
 ```
 
@@ -138,10 +138,10 @@ When all tasks in an epic are complete, integrate to dev:
 # Epic completion workflow
 git checkout dev
 git pull origin dev
-git merge [epic-name] --no-ff -m "feat: Complete [epic-name] implementation"
+git merge [epic-name]/main --no-ff -m "feat: Complete [epic-name] implementation"
 git push origin dev
 
-echo "✅ Epic [epic-name] integrated to dev branch"
+echo "✅ Epic [epic-name]/main integrated to dev branch"
 ```
 
 ### **Branch Management Rules**
@@ -155,8 +155,8 @@ echo "✅ Epic [epic-name] integrated to dev branch"
 
 #### **Branch Protection Guidelines**
 - **main**: Only accepts merges from `dev` via PR
-- **dev**: Only accepts merges from epic branches via PR  
-- **epic branches**: Accept merges from task branches directly
+- **dev**: Only accepts merges from epic main branches (`epic-name/main`) via PR  
+- **epic main branches**: Accept merges from task branches directly
 - **task branches**: Where actual implementation happens
 
 #### **Commit Message Format**
@@ -190,9 +190,9 @@ Epic: [epic-name]
 # Phase 1: Branch Setup
 git checkout main && git pull origin main
 git checkout dev && git pull origin dev
-git checkout user-auth 2>/dev/null || git checkout -b user-auth dev
-git merge dev --no-ff && git push origin user-auth
-git checkout -b user-auth/TASK-A001-setup-structure user-auth
+git checkout user-auth/main 2>/dev/null || git checkout -b user-auth/main dev
+git merge dev --no-ff && git push origin user-auth/main
+git checkout -b user-auth/TASK-A001-setup-structure user-auth/main
 git push -u origin user-auth/TASK-A001-setup-structure
 
 # Phase 2: Implementation
@@ -208,14 +208,14 @@ git add . && git commit -m "TASK-A001: test - Add unit tests for component struc
 git push origin user-auth/TASK-A001-setup-structure
 
 # Phase 4: Integration
-git checkout user-auth
-git pull origin user-auth
+git checkout user-auth/main
+git pull origin user-auth/main
 git merge user-auth/TASK-A001-setup-structure --no-ff
-git push origin user-auth
+git push origin user-auth/main
 git branch -d user-auth/TASK-A001-setup-structure
 git push origin --delete user-auth/TASK-A001-setup-structure
 
-echo "✅ TASK-A001 complete and integrated to user-auth epic branch"
+echo "✅ TASK-A001 complete and integrated to user-auth/main epic branch"
 ```
 
 ### **Error Handling & Recovery**
@@ -231,11 +231,11 @@ git push origin [epic-name]/[task-id]-[description]
 
 #### **Merge Conflicts**
 ```bash
-# If conflicts during epic branch merge
-git checkout [epic-name]
-git pull origin [epic-name]
+# If conflicts during epic main branch merge
+git checkout [epic-name]/main
+git pull origin [epic-name]/main
 git checkout [epic-name]/[task-id]-[description]
-git rebase [epic-name]
+git rebase [epic-name]/main
 # Resolve conflicts manually
 git add . && git rebase --continue
 git push --force-with-lease origin [epic-name]/[task-id]-[description]
