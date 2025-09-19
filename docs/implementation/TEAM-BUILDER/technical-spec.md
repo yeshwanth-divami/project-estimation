@@ -4,7 +4,7 @@
 
 **Component Name:** TEAM-BUILDER  
 **Type:** Frontend Interface Component  
-**Technology Stack:** SvelteKit + Skeleton UI  
+**Technology Stack:** React + Next.js + TypeScript + Tailwind CSS  
 **Purpose:** Interactive table interface for building team configurations with real-time cost calculations  
 **Build Phase:** Milestone 1 (Foundation)  
 **Dependencies:** LOCAL-CALCULATION component  
@@ -33,8 +33,8 @@ graph TD
     E --> E3[DiscountToggle]
     
     F[LOCAL-CALCULATION] --> A
-    G[Store: configurationState] --> A
-    H[Store: rateCardData] --> A
+    G[Context: ConfigurationContext] --> A
+    H[Context: RateCardContext] --> A
 ```
 
 ## 3. Data Models
@@ -87,11 +87,11 @@ interface RateCardEntry {
 }
 ```
 
-### 3.2 Svelte Store Structure
+### 3.2 React Context Structure
 
 ```typescript
-// stores/configuration.ts
-interface ConfigurationStore {
+// contexts/ConfigurationContext.tsx
+interface ConfigurationContextType {
   activeConfiguration: TeamConfiguration;
   savedConfigurations: TeamConfiguration[];
   rateCard: RateCardEntry[];
@@ -105,6 +105,17 @@ interface ConfigurationStore {
     errors: ValidationError[];
     warnings: string[];
   };
+  actions: {
+    addRole: (roleId: string, timeAllocation: number) => void;
+    removeRole: (allocationId: string) => void;
+    updateRole: (allocationId: string, updates: Partial<RoleAllocation>) => void;
+    setQuote: (amount: number) => void;
+    applyDiscount: (discount: Discount) => void;
+    removeDiscount: () => void;
+    saveConfiguration: (name: string) => void;
+    loadConfiguration: (id: string) => void;
+    resetConfiguration: () => void;
+  };
 }
 ```
 
@@ -113,7 +124,7 @@ interface ConfigurationStore {
 ### 4.1 TeamConfigTable Component
 
 **Purpose:** Main table interface for role configuration  
-**File:** `src/lib/components/TeamConfigTable.svelte`
+**File:** `src/components/TeamConfigTable.tsx`
 
 **Props:**
 ```typescript
@@ -122,28 +133,29 @@ interface TeamConfigTableProps {
   rateCard: RateCardEntry[];
   readonly?: boolean;
   maxRows?: number;
+  className?: string;
 }
 ```
 
 **Key Features:**
 
-- Dynamic row addition/removal
-- Role dropdown with search functionality
+- Dynamic row addition/removal using React state
+- Role dropdown with search functionality using React Select
 - Time allocation input with hours/days toggle
-- Real-time cost calculation per row
-- Drag-and-drop row reordering
-- Inline validation feedback
+- Real-time cost calculation per row using useMemo
+- Drag-and-drop row reordering with React DnD
+- Inline validation feedback with React Hook Form
 
 **Performance Requirements:**
 
-- Row calculations must complete within 100ms
+- Row calculations must complete within 100ms using React.memo
 - Support up to 20 rows without performance degradation
-- Debounced input handling for rapid typing
+- Debounced input handling using useDebounce hook
 
 ### 4.2 RoleRow Component
 
 **Purpose:** Individual configuration row with role selection and time allocation  
-**File:** `src/lib/components/RoleRow.svelte`
+**File:** `src/components/RoleRow.tsx`
 
 **Props:**
 ```typescript
@@ -230,12 +242,12 @@ interface DiscountManagerProps {
 
 ## 5. State Management
 
-### 5.1 Reactive State Flow
+### 5.1 React State Flow
 
 ```mermaid
 graph LR
     A[User Input] --> B[Role/Time Change]
-    B --> C[Update Store]
+    B --> C[Update Context]
     C --> D[Trigger Calculations]
     D --> E[Update UI]
     E --> F[Validate State]
@@ -248,24 +260,78 @@ graph LR
     J --> D
 ```
 
-### 5.2 Store Actions
+### 5.2 Context Actions
 
 ```typescript
-// Configuration actions
-export const configurationActions = {
-  addRole: (roleId: string, timeAllocation: number) => void;
-  removeRole: (allocationId: string) => void;
-  updateRole: (allocationId: string, updates: Partial<RoleAllocation>) => void;
-  setQuote: (amount: number) => void;
-  applyDiscount: (discount: Discount) => void;
-  removeDiscount: () => void;
-  saveConfiguration: (name: string) => void;
-  loadConfiguration: (id: string) => void;
-  resetConfiguration: () => void;
+// Configuration actions (already defined in ConfigurationContext)
+const useConfiguration = () => {
+  const context = useContext(ConfigurationContext);
+  if (!context) {
+    throw new Error('useConfiguration must be used within ConfigurationProvider');
+  }
+  return context;
+};
+
+// Custom hooks for specific functionality
+const useCalculations = () => {
+  const { activeConfiguration } = useConfiguration();
+  
+  const totalCost = useMemo(() => 
+    calculateTotalCost(activeConfiguration.roles), 
+    [activeConfiguration.roles]
+  );
+  
+  const ebitdaMargin = useMemo(() => 
+    calculateEBITDAMargin(totalCost, activeConfiguration.clientQuote),
+    [totalCost, activeConfiguration.clientQuote]
+  );
+  
+  return { totalCost, ebitdaMargin };
 };
 ```
 
-## 6. User Interface Design
+## 6. Technology Stack
+
+### 6.1 Core Technologies
+- **Framework:** Next.js 14+ (App Router)
+- **Language:** TypeScript 5+
+- **Styling:** Tailwind CSS 3+
+- **State Management:** React Context + useReducer
+- **Forms:** React Hook Form + Zod validation
+- **UI Components:** Headless UI + Custom Tailwind components
+
+### 6.2 Key Dependencies
+```json
+{
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "typescript": "^5.0.0",
+    "tailwindcss": "^3.0.0",
+    "react-hook-form": "^7.0.0",
+    "zod": "^3.0.0",
+    "@headlessui/react": "^1.7.0",
+    "react-select": "^5.0.0",
+    "decimal.js": "^10.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  }
+}
+```
+
+### 6.3 Technology Rationale
+- **Next.js:** Excellent TypeScript support, built-in optimization, easy deployment
+- **Tailwind CSS:** Rapid styling, consistent design system, responsive utilities
+- **React Hook Form:** Performance-optimized forms with minimal re-renders
+- **Zod:** Type-safe validation that integrates well with TypeScript
+- **Decimal.js:** Precise financial calculations avoiding floating-point errors
+
+## 7. User Interface Design
 
 ### 6.1 Layout Structure
 
@@ -294,22 +360,32 @@ export const configurationActions = {
 └─────────────────────────────────────────────────────────┘
 ```
 
-### 6.2 Responsive Breakpoints
+### 7.2 Responsive Breakpoints (Tailwind CSS)
 
-- **Desktop (>1024px):** Full table layout with all columns visible
-- **Tablet (768-1024px):** Collapsed cost column, expandable details
-- **Mobile (<768px):** Stack layout, one role per card
+- **Desktop (lg: >1024px):** Full table layout with all columns visible
+- **Tablet (md: 768-1024px):** Collapsed cost column, expandable details
+- **Mobile (sm: <768px):** Stack layout using Tailwind's responsive grid
 
-### 6.3 Visual States
+**Tailwind Implementation:**
+```tsx
+<div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
+  <div className="md:col-span-2">Role Selection</div>
+  <div className="md:col-span-1">Time Allocation</div>
+  <div className="hidden lg:block">Cost</div>
+  <div className="md:col-span-1">Actions</div>
+</div>
+```
+
+### 7.3 Visual States
 
 **Normal State:**
-- Clean table rows with clear visual hierarchy
-- Subtle hover effects on interactive elements
-- Currency formatting with proper alignment
+- Clean table rows with Tailwind's border and spacing utilities
+- Hover effects using `hover:bg-gray-50` classes
+- Currency formatting with proper alignment using `text-right`
 
 **Calculation State:**
-- Loading spinners during complex calculations
-- Debounced input feedback
+- Loading spinners using Tailwind's `animate-spin`
+- Debounced input feedback with `transition-colors`
 - Progressive calculation updates
 
 **Error State:**
@@ -464,25 +540,25 @@ interface FutureAPIIntegration {
 ## 11. Implementation Checklist
 
 ### Phase 1: Core Structure
-- [ ] Set up SvelteKit project with Skeleton UI
-- [ ] Create basic component structure
+- [ ] Set up Next.js project with TypeScript and Tailwind CSS
+- [ ] Create basic component structure with React functional components
 - [ ] Implement TeamConfigTable with static data
-- [ ] Add/remove row functionality
-- [ ] Basic styling and responsive layout
+- [ ] Add/remove row functionality using React state
+- [ ] Basic styling with Tailwind CSS and responsive layout
 
 ### Phase 2: Calculations
 - [ ] Integrate LOCAL-CALCULATION component
-- [ ] Real-time cost calculations per row
+- [ ] Real-time cost calculations per row using useMemo
 - [ ] Total cost calculation and display
 - [ ] EBITDA margin calculation
-- [ ] Performance optimization for calculations
+- [ ] Performance optimization with React.memo and useCallback
 
 ### Phase 3: Advanced Features
 - [ ] Quote input and profit analysis
 - [ ] Discount application (percentage and fixed)
-- [ ] Configuration saving to localStorage
+- [ ] Configuration saving to localStorage with React hooks
 - [ ] Import/export functionality
-- [ ] Input validation and error handling
+- [ ] Input validation with React Hook Form and error handling
 
 ### Phase 4: Polish & Testing
 - [ ] Complete responsive design

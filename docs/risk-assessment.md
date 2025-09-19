@@ -5,7 +5,7 @@
 This risk assessment analyzes potential challenges for Kaushalya, a service business cost estimation platform. The project demonstrates **moderate overall risk** with strong technical foundations but requires careful attention to user adoption and learning curve management.
 
 **Tech Stack Finalized:**
-- **Frontend:** SvelteKit + TypeScript + Skeleton UI
+- **Frontend:** React + Next.js + TypeScript + Tailwind CSS
 - **Backend:** Python + FastAPI + SQLModel + Typer
 - **Database:** PostgreSQL
 - **Deployment:** Docker + AWS EC2
@@ -14,14 +14,14 @@ This risk assessment analyzes potential challenges for Kaushalya, a service busi
 
 ### 🔴 HIGH RISK (Immediate Attention Required)
 
-#### 1. **Learning Curve Risk** - Impact: High, Probability: Medium
-**Description:** Team learning Svelte while building production app could impact delivery timeline and code quality.
+#### 1. **Learning Curve Risk** - Impact: Low, Probability: Low
+**Description:** Team learning React ecosystem while building production app - significantly reduced risk due to widespread React knowledge and extensive learning resources.
 
 **Mitigation Strategies:**
-- Allocate dedicated time for Svelte learning before development starts
-- Build a simple prototype first to validate approach
-- Have senior developer do initial architecture setup
-- Plan for timeline buffer in MVP phase
+- Leverage existing React knowledge within team
+- Use Next.js documentation and tutorials (excellent quality)
+- Start with Create Next App template for rapid setup
+- Utilize large ecosystem of examples and Stack Overflow solutions
 
 #### 2. **User Adoption Risk** - Impact: High, Probability: Medium
 **Description:** Target users (service business owners) may resist adopting new financial tools or prefer existing Excel-based workflows.
@@ -62,13 +62,14 @@ This risk assessment analyzes potential challenges for Kaushalya, a service busi
 - Consider progressive web app (PWA) features
 
 #### 6. **Performance Risk** - Impact: Medium, Probability: Low
-**Description:** Real-time calculations with 20+ roles might exceed 100ms requirement.
+**Description:** Real-time calculations with 20+ roles might exceed 100ms requirement with React's virtual DOM overhead.
 
 **Mitigation Strategies:**
-- Use Svelte's reactive optimization advantages
+- Use React.memo and useMemo for calculation optimization
 - Implement calculation debouncing for rapid user input
+- Consider useCallback for expensive function references
 - Add performance monitoring and alerts
-- Consider web workers for heavy calculations if needed
+- Use React DevTools Profiler to identify bottlenecks
 
 ### 🟢 LOW RISK (Monitor Only)
 
@@ -91,11 +92,12 @@ This risk assessment analyzes potential challenges for Kaushalya, a service busi
 
 ## Technical Risk Analysis
 
-### Frontend (SvelteKit) Risks:
-- **Learning curve:** Mitigated by Svelte's simplicity
-- **Ecosystem maturity:** Adequate for project needs
-- **Performance:** Excellent for real-time calculations
-- **Maintainability:** Clean, readable code structure
+### Frontend (React + Next.js) Risks:
+- **Learning curve:** Minimal due to widespread React adoption
+- **Ecosystem maturity:** Excellent - largest ecosystem available
+- **Performance:** Good with proper optimization techniques
+- **Maintainability:** Excellent tooling and community support
+- **Bundle size:** Manageable with Next.js optimization features
 
 ### Backend (FastAPI + SQLModel) Risks:
 - **Maturity:** Well-established, stable stack
@@ -124,8 +126,8 @@ This risk assessment analyzes potential challenges for Kaushalya, a service busi
 
 ### Pre-Development Phase:
 - [ ] Conduct 5 user interviews
-- [ ] Complete Svelte learning/prototyping
-- [ ] Set up development environment
+- [ ] Set up Next.js project with TypeScript and Tailwind
+- [ ] Configure development environment and tooling
 - [ ] Create CSV template and validation rules
 
 ### MVP Development Phase:
@@ -158,10 +160,11 @@ This risk assessment analyzes potential challenges for Kaushalya, a service busi
 
 1. **Prioritize user validation early** - Risk mitigation through user feedback
 2. **Invest in robust testing** - Prevent calculation accuracy issues
-3. **Plan conservative timeline** - Account for Svelte learning curve
-4. **Focus on CSV UX** - Critical user success factor
+3. **Plan conservative timeline** - Account for React optimization best practices
+4. **Focus on CSV UX** - Critical user success factor  
 5. **Monitor performance closely** - Key differentiator vs. Excel
+6. **Leverage React ecosystem** - Utilize extensive library availability
 
 ## Overall Risk Assessment: **MODERATE**
 
-The project has a solid technical foundation with manageable risks. The choice of Svelte adds learning curve risk but provides performance benefits that align well with project requirements. Success depends primarily on user adoption and execution quality rather than technical feasibility.
+The project has a solid technical foundation with manageable risks. The choice of React + Next.js significantly reduces learning curve risk while providing excellent ecosystem support and developer experience. Success depends primarily on user adoption and execution quality rather than technical feasibility.

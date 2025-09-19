@@ -9,7 +9,7 @@
 ## 2. Components
 
 ### Foundation Components (Build First)
-- **TEAM-BUILDER:** SvelteKit interface for adding/editing team configuration rows with local cost calculations
+- **TEAM-BUILDER:** React + Next.js interface for adding/editing team configuration rows with local cost calculations
 - **LOCAL-CALCULATION:** Frontend calculation engine for real-time cost totals and basic profit margins
 
 ### Core Components (Build Second)  
@@ -44,12 +44,12 @@ graph TD
 **What You Get:** Working frontend where you can add rows and see real-time cost totals  
 **Why First:** Immediate visual feedback and core user interaction without backend complexity  
 **Success Criteria:**
-- ✅ SvelteKit application with Skeleton UI components
+- ✅ Next.js application with TypeScript and Tailwind CSS setup
 - ✅ Add/remove team member rows with role and time allocation fields
 - ✅ Hardcoded rate data for common roles (Developer, Designer, PM, etc.)
 - ✅ Real-time calculation of individual row costs and project total
 - ✅ Basic profit margin calculation with configurable quote amount
-- ✅ Responsive table design that works on different screen sizes
+- ✅ Responsive table design using Tailwind CSS that works on different screen sizes
 **Sequential Work:** TEAM-BUILDER first for structure, then LOCAL-CALCULATION for math
 
 ### Milestone 2: Data Foundation Ready
@@ -74,7 +74,7 @@ graph TD
 - ✅ Enhanced calculation engine with EBITDA margin analysis
 - ✅ Discount application logic (percentage and fixed amount)
 - ✅ API validation and error responses
-- ✅ Frontend error handling for API failures
+- ✅ React error boundaries and proper error handling for API failures
 **Sequential Work:** API-GATEWAY provides structure, then BUSINESS-LOGIC implements calculations
 
 ### Milestone 4: Complete MVP Ready
@@ -86,7 +86,7 @@ graph TD
 - ✅ Configuration saving with database persistence
 - ✅ Basic export functionality (JSON/CSV download)
 - ✅ Error handling and user feedback throughout entire flow
-- ✅ Performance optimization for calculations and UI updates
+- ✅ Performance optimization using React.memo and useMemo for calculations
 - ✅ Basic documentation and user guidance
 **Sequential Work:** QUOTE-GENERATOR orchestrates workflow, then EXPORT-SYSTEM adds persistence
 
@@ -98,9 +98,9 @@ Since this is a **solo developer project**, all work must be **sequential** rath
 ### Phase-by-Phase Execution:
 
 **Phase 1: Frontend Foundation (Week 1)**
-1. Set up SvelteKit project with Skeleton UI components
+1. Set up Next.js project with TypeScript and Tailwind CSS
 2. Create team configuration table with add/remove row functionality
-3. Implement local calculation engine for cost totals
+3. Implement local calculation engine for cost totals using React hooks
 4. Add hardcoded rate data for testing and immediate functionality
 
 **Phase 2: Backend Foundation (Weeks 2-3)**
@@ -112,13 +112,13 @@ Since this is a **solo developer project**, all work must be **sequential** rath
 **Phase 3: API Development (Weeks 4-5)**
 1. Set up FastAPI project structure with proper routing
 2. Implement configuration management endpoints
-3. Connect frontend to backend APIs replacing hardcoded data
+3. Connect React frontend to backend APIs replacing hardcoded data
 4. Add enhanced calculation engine and discount logic
 
 **Phase 4: Integration & Polish (Week 6)**
 1. Implement complete user workflow from CSV to quote
 2. Add configuration saving and export functionality
-3. Performance testing and optimization
+3. Performance testing and React optimization (memo, useMemo, useCallback)
 4. Error handling and user experience polish
 
 ### Development Dependencies:
@@ -136,7 +136,7 @@ Since this is a **solo developer project**, all work must be **sequential** rath
 ## 6. Risk Mitigation for Solo Development
 
 ### Technical Risks:
-- **Svelte Learning Curve:** Minimal risk since starting with frontend-first approach
+- **React Learning Curve:** Minimal risk due to widespread React adoption and extensive documentation
 - **Calculation Logic Complexity:** Building locally first helps validate logic before backend
 - **Integration Complexity:** Frontend-first approach reduces integration risk
 
@@ -146,6 +146,6 @@ Since this is a **solo developer project**, all work must be **sequential** rath
 - **Backend Optimization:** Keep backend simple until frontend requirements are clear
 
 ### Timeline Buffers:
-- Add 20% buffer to Phase 1 for Svelte learning and calculation logic
+- Add 10% buffer to Phase 1 for React setup and calculation logic (reduced from Svelte)
 - Plan for additional testing time in Phase 4 integration
 - Consider Phase 1 as foundation sprint that affects all subsequent work
