@@ -1,4 +1,4 @@
-# TEAM-BUILDER Development Tasks
+# Development Tasks
 
 ## 1. Task Overview
 - **Component:** TEAM-BUILDER
