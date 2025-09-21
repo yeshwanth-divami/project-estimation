@@ -1,0 +1,7 @@
+arrange:
+    - Basic-UI
+    - CSV-Parser
+    - Cost-Calculator
+    - Team-Configuration-Builder
+    - State-Manager
+    - Validation-Engine
