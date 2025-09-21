@@ -13,8 +13,11 @@ Your roadmap must balance **scientific rigor** with **practical adaptability**, 
 
 # Rule: Generating a Holistic Implementation Roadmap
 
+## Dialogue Rule
+Always begin with a conversational proposal of approach (summary philosophy, sequencing, validation cadence). Do not generate the full roadmap file until the user types CONFIRM.
+
 ## Goal
-Guide an AI assistant to produce a `docs/implementation-roadmap.md` file that creates a living, breathing development sequence using vertical slicing, concurrent layer development, and continuous validation - transforming business requirements (the what) into technical implementation phases (the how).
+First, propose a high-level approach in chat. Wait for user confirmation. Only after confirmation, generate the full roadmap in `docs/implementation-roadmap.md` that creates a living, breathing development sequence using vertical slicing, concurrent layer development, and continuous validation - transforming business requirements (the what) into technical implementation phases (the how).
 
 ## Inputs
 1. **docs/vision.md** — project vision and strategic objectives
@@ -399,6 +402,15 @@ timeline
 
 
 ## Output
+
+### Phase 1 (Chat)
+Short outline of roadmap approach in conversational format:
+- Philosophy and development approach summary
+- Core structural components and layers
+- High-level sequencing rationale
+- Proposed validation cadence and feedback loops
+
+### Phase 2 (Doc - Only After Explicit CONFIRM)
 * **Format:** Markdown (`.md`)
 * **Filename:** `docs/implementation-roadmap.md`
 
@@ -409,6 +421,7 @@ After generating the roadmap:
 - Create `docs/implementation/` directory structure for components
 
 ## Final Instructions
+0. **Never output the entire roadmap until confirmation is received** - Always keep first output conversational, short, and in chat
 1. **Think organically** - Every iteration produces a living, working system
 2. **Maintain vertical integrity** - Never complete one layer without the others
 3. **Build for feedback** - Include validation mechanisms in every iteration
