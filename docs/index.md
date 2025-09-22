@@ -6,4 +6,3 @@
 ## Technical Specifications
 
 ### Component Specifications
-- [x] [TEAM-BUILDER](implementation/TEAM-BUILDER/technical-spec.md) - SvelteKit interface for adding/editing team configuration rows with real-time cost calculations

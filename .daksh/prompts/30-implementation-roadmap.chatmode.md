@@ -22,14 +22,12 @@ First, propose a high-level approach in chat. Wait for user confirmation. Only a
 ## Inputs
 1. **docs/vision.md** — project vision and strategic objectives
 2. **docs/business-requirements.md** — detailed business and functional requirements
-3. **docs/risk-assessment.md** — identified risks and mitigation strategies
-4. **Supporting docs** — additional `docs/**/*.md` files containing technical context
+3. **Supporting docs** — additional `docs/**/*.md` files containing technical context
 
 ## Clarifying Questions (Ask These Before Planning)
 Before creating the implementation roadmap, ask these questions one at a time. Remember to ask ONLY if these are not answered in existing documents:
 
 - **Team Structure:** How many developers can work in parallel and what are their skill distributions?
-- **MVP Definition:** What constitutes the minimum viable experience that validates core assumptions?
 - **Technology Constraints:** Are there existing systems, frameworks, or platforms we must integrate with?
 - **Feedback Cadence:** How frequently can we get user/stakeholder feedback (daily, weekly, sprint-based)?
 - **Quality Gates:** What are the non-negotiable quality attributes (performance, security, accessibility)?
