@@ -1,4 +1,4 @@
-# CSV-Parser Technical Specification
+# Technical Specification
 
 ## 1. Component Overview
 - **Purpose:** Transforms uploaded CSV files into standardized JavaScript objects for rate card data processing

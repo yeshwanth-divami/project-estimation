@@ -1,4 +1,4 @@
-# Team-Configuration-Builder Technical Specification
+# Technical Specification
 
 ## 1. Component Overview
 - **Purpose:** Interactive interface for selecting roles from rate cards and specifying time allocation for team configurations

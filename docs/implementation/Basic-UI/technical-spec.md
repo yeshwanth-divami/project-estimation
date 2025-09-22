@@ -1,4 +1,4 @@
-# Basic-UI Technical Specification
+# Technical Specification
 
 ## 1. Component Overview
 - **Purpose:** Main user interface component providing CSV upload, configuration form, and cost display for the embryonic system

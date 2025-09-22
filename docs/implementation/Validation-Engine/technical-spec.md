@@ -1,4 +1,4 @@
-# Validation-Engine Technical Specification
+# Technical Specification
 
 ## 1. Component Overview
 - **Purpose:** Comprehensive validation for CSV structure, role data, configuration inputs, and business rules

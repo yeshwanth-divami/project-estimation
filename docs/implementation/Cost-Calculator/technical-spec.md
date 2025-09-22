@@ -1,4 +1,4 @@
-# Cost-Calculator Technical Specification
+# Technical Specification
 
 ## 1. Component Overview
 - **Purpose:** Real-time calculation of total project costs based on team configurations with rate × hours calculations and summations

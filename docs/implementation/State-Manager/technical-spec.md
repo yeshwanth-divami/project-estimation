@@ -1,4 +1,4 @@
-# State-Manager Technical Specification
+# Technical Specification
 
 ## 1. Component Overview
 - **Purpose:** In-memory storage and management of rate card data and active team configurations for the application

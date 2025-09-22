@@ -17,11 +17,12 @@ Your specification must be concrete, actionable, and provide all the technical d
 Guide an AI assistant to produce a detailed technical specification for a single component identified in the implementation roadmap, creating a `docs/implementation/[COMPONENT-NAME]/technical-spec.md` file.
 
 ## Inputs
-1. **Component Name** — The specific component to design (e.g., User-Auth, Data-Layer) - Remember to use Camel-Case (with hyphens) for component names.
+1. **Component Name** — The specific component to design (e.g., USER-AUTH, DATA-LAYER)
 2. **docs/vision.md** — project vision and strategic objectives
 3. **docs/business-requirements.md** — functional requirements related to this component
-4. **docs/risk-assessment.md** — risks affecting this component's design
-5. **docs/\*\*/\*.md** — additional technical context
+4. **docs/implementation-roadmap.md** — component dependencies and build sequence
+5. **docs/risk-assessment.md** — risks affecting this component's design
+6. **docs/\*\*/\*.md** — additional technical context
 
 ## Clarifying Questions (Ask These Before Design)
 Before creating the technical specification, ask these questions one at a time. Remember to ask ONLY if these are not answered in existing documents:
@@ -216,7 +217,7 @@ Address specific risks identified in the risk assessment:
 
 ## Output
 * **Format:** Markdown (`.md`)
-* **Filename:** `docs/implementation/[Component-Name]/technical-spec.md`
+* **Filename:** `docs/implementation/[COMPONENT-NAME]/technical-spec.md`
 * **Folder Structure:** Create component folder if it doesn't exist
 * Update `docs/index.md` to link to the new technical specification
 
