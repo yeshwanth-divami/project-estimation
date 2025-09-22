@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Estimation Tool - MVP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #3498db;
+        }
+
+        .upload-area.dragover {
+            border-color: #2ecc71;
+            background-color: #f8f9fa;
+        }
+
+        input[type="file"] {
+            margin: 1rem 0;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .rate-card-display {
+            margin-top: 1rem;
+        }
+
+        .rate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .rate-table th,
+        .rate-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .rate-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .config-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .team-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .team-table th,
+        .team-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .team-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .team-table select,
+        .team-table input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .add-role-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-role-btn:hover {
+            background: #219a52;
+        }
+
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .remove-btn:hover {
+            background: #c0392b;
+        }
+
+        .cost-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .cost-section {
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .client-cost {
+            background: #e8f5e8;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .internal-cost {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .profit-margin {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        input[type="number"] {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .results {
+            background: #e8f5e8;
+            border-left: 4px solid #2ecc71;
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .total-cost {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .error {
+            background: #ffeaea;
+            border-left: 4px solid #e74c3c;
+            color: #c0392b;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .success {
+            background: #e8f5e8;
+            border-left: 4px solid #2ecc71;
+            color: #27ae60;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Project Estimation Tool</h1>
+        </header>
+
+        <!-- Step 1: CSV Upload -->
+        <div class="card">
+            <h2>Step 1: Upload Rate Card</h2>
+            <div class="upload-area" id="uploadArea">
+                <p>Drag and drop your CSV file here, or click to select</p>
+                <input type="file" id="csvFile" accept=".csv" />
+                <button class="btn" onclick="triggerFileSelect()">Select CSV File</button>
+            </div>
+            <div id="messages"></div>
+
+            <!-- Rate card display -->
+            <div id="rateCardDisplay" class="rate-card-display hidden">
+                <h3>Loaded Rate Card</h3>
+                <table class="rate-table" id="rateTable">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Client Rate</th>
+                            <th>Internal Cost</th>
+                            <th>Margin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rateTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Step 2: Team Configuration -->
+        <div class="card">
+            <h2>Step 2: Configure Your Team</h2>
+            <div id="configForm" class="config-form hidden">
+                <p>Build your team by adding roles and specifying hours:</p>
+                <button class="add-role-btn" onclick="addTeamMember()">+ Add Team Member</button>
+
+                <table class="team-table" id="teamTable">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Hours</th>
+                            <th>Client Cost</th>
+                            <th>Internal Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teamTableBody">
+                    </tbody>
+                </table>
+
+                <button class="btn" onclick="calculateCost()">Calculate Total Cost</button>
+            </div>
+            <div id="noRateCard" class="loading">
+                Please upload a rate card first to configure your team.
+            </div>
+        </div>
+
+        <!-- Step 3: Results -->
+        <div class="card">
+            <h2>Step 3: Cost Analysis</h2>
+            <div id="results" class="hidden">
+                <div class="cost-comparison">
+                    <div class="cost-section client-cost">
+                        <h3>Client Quote</h3>
+                        <div class="total-cost" id="clientTotalCost">$0</div>
+                        <div id="clientBreakdown"></div>
+                    </div>
+                    <div class="cost-section internal-cost">
+                        <h3>Internal Cost</h3>
+                        <div class="total-cost" id="internalTotalCost">$0</div>
+                        <div id="internalBreakdown"></div>
+                    </div>
+                </div>
+                <div class="profit-margin">
+                    <h3>Profit Analysis</h3>
+                    <div>Profit Margin: <span class="total-cost" id="profitMargin">$0 (0%)</span></div>
+                </div>
+            </div>
+            <div id="noCalculation" class="loading">
+                Configure your team above to see cost calculations.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let rateCardData = [];
+        let teamConfiguration = [];
+        let nextRowId = 1;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function () {
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            const fileInput = document.getElementById('csvFile');
+            const uploadArea = document.getElementById('uploadArea');
+
+            // File input change
+            fileInput.addEventListener('change', handleFileSelect);
+
+            // Drag and drop
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+        }
+
+        function triggerFileSelect() {
+            document.getElementById('csvFile').click();
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        function processFile(file) {
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                showMessage('Please select a CSV file.', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const csvContent = e.target.result;
+                    parseCSV(csvContent);
+                } catch (error) {
+                    showMessage('Error reading file: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSV(csvContent) {
+            try {
+                const lines = csvContent.trim().split('\n');
+                if (lines.length < 2) {
+                    throw new Error('CSV must have at least a header row and one data row');
+                }
+
+                // Parse header to find role, client rate, and internal cost columns
+                const header = lines[0].split(',').map(col => col.trim().replace(/"/g, ''));
+                const roleIndex = findColumnIndex(header, ['role', 'title', 'position', 'name']);
+                const clientRateIndex = findColumnIndex(header, ['client rate', 'rate', 'hourly', 'client', 'bill']);
+                const internalCostIndex = findColumnIndex(header, ['internal cost', 'cost', 'internal', 'loaded']);
+
+                if (roleIndex === -1) {
+                    throw new Error('CSV must contain a role/title column');
+                }
+                if (clientRateIndex === -1) {
+                    throw new Error('CSV must contain a client rate/hourly column');
+                }
+
+                // Parse data rows
+                const roles = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const row = lines[i].split(',').map(col => col.trim().replace(/"/g, ''));
+                    if (row.length >= Math.max(roleIndex, clientRateIndex) + 1) {
+                        const roleName = row[roleIndex];
+                        const clientRate = parseFloat(row[clientRateIndex]);
+                        const internalCost = internalCostIndex !== -1 ? parseFloat(row[internalCostIndex]) : clientRate * 0.8; // Default to 80% if not provided
+
+                        if (roleName && !isNaN(clientRate) && clientRate > 0) {
+                            roles.push({
+                                id: `role_${i}`,
+                                name: roleName,
+                                clientRate: clientRate,
+                                internalCost: !isNaN(internalCost) ? internalCost : clientRate * 0.8
+                            });
+                        }
+                    }
+                }
+
+                if (roles.length === 0) {
+                    throw new Error('No valid role data found in CSV');
+                }
+
+                rateCardData = roles;
+                displayRateCard();
+                setupConfiguration();
+                showMessage(`Successfully loaded ${roles.length} roles from CSV`, 'success');
+
+            } catch (error) {
+                showMessage('Error parsing CSV: ' + error.message, 'error');
+            }
+        }
+
+        function findColumnIndex(header, possibleNames) {
+            for (const name of possibleNames) {
+                const index = header.findIndex(col =>
+                    col.toLowerCase().includes(name.toLowerCase())
+                );
+                if (index !== -1) return index;
+            }
+            return -1;
+        }
+
+        function displayRateCard() {
+            const display = document.getElementById('rateCardDisplay');
+            const tableBody = document.getElementById('rateTableBody');
+
+            tableBody.innerHTML = '';
+            rateCardData.forEach(role => {
+                const margin = ((role.clientRate - role.internalCost) / role.clientRate * 100).toFixed(1);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${role.name}</td>
+                    <td>$${role.clientRate.toFixed(2)}</td>
+                    <td>$${role.internalCost.toFixed(2)}</td>
+                    <td>${margin}%</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            display.classList.remove('hidden');
+        }
+
+        function setupConfiguration() {
+            const configForm = document.getElementById('configForm');
+            const noRateCard = document.getElementById('noRateCard');
+
+            teamConfiguration = [];
+            const teamTableBody = document.getElementById('teamTableBody');
+            teamTableBody.innerHTML = '';
+
+            configForm.classList.remove('hidden');
+            noRateCard.classList.add('hidden');
+        }
+
+        function addTeamMember() {
+            const teamTableBody = document.getElementById('teamTableBody');
+            const rowId = nextRowId++;
+
+            const row = document.createElement('tr');
+            row.id = `team-row-${rowId}`;
+
+            // Create role dropdown options
+            let roleOptions = '<option value="">Select Role...</option>';
+            rateCardData.forEach(role => {
+                roleOptions += `<option value="${role.id}">${role.name} ($${role.clientRate}/hr)</option>`;
+            });
+
+            row.innerHTML = `
+                <td>
+                    <select id="role-${rowId}" onchange="updateTeamMember(${rowId})">
+                        ${roleOptions}
+                    </select>
+                </td>
+                <td>
+                    <input type="number" id="hours-${rowId}" placeholder="0" min="0" step="0.5" 
+                           onchange="updateTeamMember(${rowId})" oninput="updateTeamMember(${rowId})">
+                </td>
+                <td id="client-cost-${rowId}">$0.00</td>
+                <td id="internal-cost-${rowId}">$0.00</td>
+                <td>
+                    <button class="remove-btn" onclick="removeTeamMember(${rowId})">Remove</button>
+                </td>
+            `;
+
+            teamTableBody.appendChild(row);
+
+            // Add to configuration array
+            teamConfiguration.push({
+                rowId: rowId,
+                roleId: null,
+                hours: 0,
+                clientCost: 0,
+                internalCost: 0
+            });
+        }
+
+        function removeTeamMember(rowId) {
+            const row = document.getElementById(`team-row-${rowId}`);
+            if (row) {
+                row.remove();
+                teamConfiguration = teamConfiguration.filter(config => config.rowId !== rowId);
+                calculateCost();
+            }
+        }
+
+        function updateTeamMember(rowId) {
+            const roleSelect = document.getElementById(`role-${rowId}`);
+            const hoursInput = document.getElementById(`hours-${rowId}`);
+            const clientCostCell = document.getElementById(`client-cost-${rowId}`);
+            const internalCostCell = document.getElementById(`internal-cost-${rowId}`);
+
+            const config = teamConfiguration.find(c => c.rowId === rowId);
+            if (!config) return;
+
+            const selectedRoleId = roleSelect.value;
+            const hours = parseFloat(hoursInput.value) || 0;
+
+            config.roleId = selectedRoleId;
+            config.hours = hours;
+
+            if (selectedRoleId && hours > 0) {
+                const role = rateCardData.find(r => r.id === selectedRoleId);
+                if (role) {
+                    config.clientCost = hours * role.clientRate;
+                    config.internalCost = hours * role.internalCost;
+
+                    clientCostCell.textContent = `$${config.clientCost.toFixed(2)}`;
+                    internalCostCell.textContent = `$${config.internalCost.toFixed(2)}`;
+                }
+            } else {
+                config.clientCost = 0;
+                config.internalCost = 0;
+                clientCostCell.textContent = '$0.00';
+                internalCostCell.textContent = '$0.00';
+            }
+
+            calculateCost();
+        }
+
+        function calculateCost() {
+            const validConfigs = teamConfiguration.filter(config => config.roleId && config.hours > 0);
+
+            const totalClientCost = validConfigs.reduce((sum, config) => sum + config.clientCost, 0);
+            const totalInternalCost = validConfigs.reduce((sum, config) => sum + config.internalCost, 0);
+            const profitAmount = totalClientCost - totalInternalCost;
+            const profitPercentage = totalClientCost > 0 ? (profitAmount / totalClientCost * 100) : 0;
+
+            const results = document.getElementById('results');
+            const noCalculation = document.getElementById('noCalculation');
+
+            // Update totals
+            document.getElementById('clientTotalCost').textContent = `$${totalClientCost.toFixed(2)}`;
+            document.getElementById('internalTotalCost').textContent = `$${totalInternalCost.toFixed(2)}`;
+            document.getElementById('profitMargin').textContent = `$${profitAmount.toFixed(2)} (${profitPercentage.toFixed(1)}%)`;
+
+            // Update breakdowns
+            const clientBreakdown = document.getElementById('clientBreakdown');
+            const internalBreakdown = document.getElementById('internalBreakdown');
+
+            if (validConfigs.length > 0) {
+                let clientHTML = '<h4>Breakdown:</h4><ul>';
+                let internalHTML = '<h4>Breakdown:</h4><ul>';
+
+                validConfigs.forEach(config => {
+                    const role = rateCardData.find(r => r.id === config.roleId);
+                    clientHTML += `<li>${role.name}: ${config.hours}h × $${role.clientRate}/h = $${config.clientCost.toFixed(2)}</li>`;
+                    internalHTML += `<li>${role.name}: ${config.hours}h × $${role.internalCost}/h = $${config.internalCost.toFixed(2)}</li>`;
+                });
+
+                clientHTML += '</ul>';
+                internalHTML += '</ul>';
+
+                clientBreakdown.innerHTML = clientHTML;
+                internalBreakdown.innerHTML = internalHTML;
+            } else {
+                clientBreakdown.innerHTML = '<p>Add team members to see breakdown.</p>';
+                internalBreakdown.innerHTML = '<p>Add team members to see breakdown.</p>';
+            }
+
+            if (validConfigs.length > 0) {
+                results.classList.remove('hidden');
+                noCalculation.classList.add('hidden');
+            } else {
+                results.classList.add('hidden');
+                noCalculation.classList.remove('hidden');
+            }
+        }
+
+        function showMessage(message, type) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.textContent = message;
+
+            messagesDiv.innerHTML = '';
+            messagesDiv.appendChild(messageDiv);
+
+            // Auto-hide success messages after 3 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.remove();
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+
+</html>
